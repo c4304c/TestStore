@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useContext } from 'react'
 import { ConnectButton } from 'web3uikit'
 import Link from 'next/link'
 import logo from '../assets/logos.png'
@@ -9,9 +9,15 @@ import { MdVideogameAsset, MdToys} from 'react-icons/md'
 import { GiPokerHand, GiBookCover } from 'react-icons/gi'
 import { ImPriceTag } from 'react-icons/im'
 import { AiOutlineHistory } from 'react-icons/ai'
+import { shopContext } from '../context/shopContext'
 
-const isAuthenticated = true
-const username = "chris"
+const {
+    isAuthenticated,
+    nickname,
+    setNickname,
+    username,
+    handleSetUsername,
+  } = useContext(shopContext)
 
 const Sidebar = () => {
     const styles = {

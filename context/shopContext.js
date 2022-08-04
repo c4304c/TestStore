@@ -4,14 +4,52 @@ import { useMoralis, useMoralisQuery } from 'react-moralis'
 export const shopContext = createContext()
 
 export const shopProvider = ({children}) => {
+    const [username, setUsername] = useState('')
+    const [nickname, setNickname] = useState('')
 
-    return(
-        <shopContext.Provider>
-            value{{
+    const {
+        authenticate,
+        isAuthenticated,
+        enableWeb3,
+        Moralis,
+        user,
+        isWeb3Enabled,
+    } = useMoralis()
 
+    useEffect(() => {
+        ;(async() => {
+            if(isAuthenticated) {
+                const currentUsername = await user?.get('nickname')
+                setUsername(currentUsername)
+            }
+        })()
+    }, [isAuthenticated, user, username])
+
+    const handleSetUsername = () => {
+        if(user) {
+            if(nickname) {
+                user.set('nickname', nickname)
+                user.save()
+                setNickname('')
+            } else {
+                console.log('Cant set empty nickname')
+            }
+        } else {
+            console.log('No User')
+        }
+    }
+
+    return (
+        <shopContext.Provider
+            value={{
+                isAuthenticated,
+                nickname,
+                setNickname,
+                username,
+                handleSetUsername,
             }}
+            >
             {children}
         </shopContext.Provider>
     )
-
 }
